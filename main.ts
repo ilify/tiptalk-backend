@@ -11,7 +11,6 @@ const app = new Hono()
 app.use('*', logger()) // Add logger middleware
 app.use('*', cors({
     origin: 'http://localhost:3000', // Allow requests from SvelteKit
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
     credentials: true, // If you need to include cookies
 }))
 
@@ -22,7 +21,6 @@ app.route('/pay', Pay)
 app.get('/', (c) => c.json({ status: 'alive' }))
 
 Bun.serve({
-    hostname: 'localhost',
-    port: 3001,
+    port: 3000,
     fetch: app.fetch,
 })
