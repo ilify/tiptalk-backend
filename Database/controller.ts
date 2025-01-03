@@ -15,7 +15,7 @@ export class Database {
     static async init(): Promise<Database> {
         if (!this.instance) {
             const instance = new Database();
-            const filename = "Database/Data.db"; // Use a constant for the filename
+            const filename = "Database\\Data.db"; // Use a constant for the filename
             instance.db = await open({ filename, driver: sqlite3.Database });
             await instance.initTables();
             this.instance = instance;
