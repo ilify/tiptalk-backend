@@ -1,0 +1,21 @@
+{
+  "name": "back",
+  "module": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "bun run --watch main.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "hono": "^4.6.14",
+    "nanoid": "^5.0.9",
+    "sql": "^0.78.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}
