@@ -10,11 +10,11 @@ const app = new Hono();
 
 app.use("*", logger()); // Add logger middleware
 app.use(
-    "*",
-    cors({
-        origin: "*", // Allow requests from any origin
-        credentials: true, // Include credentials if needed
-    }),
+  "*",
+  cors({
+    origin: (origin) => origin || "*", // Dynamically allow the origin
+    credentials: true, // Allow credentials
+  }),
 );
 
 app.route("/auth", auth);
@@ -24,6 +24,6 @@ app.route("/pay", Pay);
 app.get("/", (c) => c.json({ status: "alive" }));
 
 Bun.serve({
-    port: 3000,
-    fetch: app.fetch,
+  port: 3000,
+  fetch: app.fetch,
 });
