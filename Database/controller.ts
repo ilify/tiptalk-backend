@@ -1,5 +1,6 @@
 import { Database as SQLiteDatabase, open } from "sqlite";
 import sqlite3 from "sqlite3";
+import path from "path";
 
 interface Table {
     name: string;
@@ -15,7 +16,7 @@ export class Database {
     static async init(): Promise<Database> {
         if (!this.instance) {
             const instance = new Database();
-            const filename = "Database\\Data.db"; // Use a constant for the filename
+            const filename = path.join(__dirname, "Database", "Data.db"); // Use path.join for cross-platform compatibility
             instance.db = await open({ filename, driver: sqlite3.Database });
             await instance.initTables();
             this.instance = instance;
