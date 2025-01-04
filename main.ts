@@ -12,7 +12,7 @@ app.use("*", logger()); // Add logger middleware
 app.use(
     "*",
     cors({
-        origin: "https://market-tiptalk.up.railway.app/", // Allow requests from SvelteKit
+        origin: "https://market-tiptalk.up.railway.app", // Allow requests from SvelteKit
         credentials: true, // If you need to include cookies
     }),
 );
