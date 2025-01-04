@@ -1,31 +1,30 @@
-import { Database as SQLiteDatabase, open } from "sqlite";
-import sqlite3 from "sqlite3";
+import { Database } from "bun:sqlite";
 import path from "path";
-
 interface Table {
     name: string;
 }
 
-export class Database {
-    private static instance: Database;
-    public db!: SQLiteDatabase;
+export class DatabaseWrapper {
+    private static instance: DatabaseWrapper;
+    public db!: Database;
     private Tables: string[] = [];
 
     private constructor() {} // Private constructor for singleton pattern
 
-    static async init(): Promise<Database> {
+    static init(): DatabaseWrapper {
         if (!this.instance) {
-            const instance = new Database();
-            const filename = path.join(__dirname, "Database", "Data.db"); // Use path.join for cross-platform compatibility
-            instance.db = await open({ filename, driver: sqlite3.Database });
-            await instance.initTables();
+            const instance = new DatabaseWrapper();
+            const filename = path.join(__dirname, "Data.db"); // Use path.join for cross-platform compatibility
+            console.log("Database path: ", filename);
+            instance.db = new Database(filename);
+            instance.initTables();
             this.instance = instance;
         }
         return this.instance;
     }
 
-    private async initTables(): Promise<void> {
-        const tables = await this.queryAll(
+    private initTables(): void {
+        const tables = this.queryAll(
             "SELECT name FROM sqlite_master WHERE type='table';",
         );
         this.Tables = tables
@@ -33,27 +32,32 @@ export class Database {
             .filter((table) => table !== "sqlite_sequence");
     }
 
-    async query(query: string, params?: any[]): Promise<any> {
-        return this.db.get(query, params);
+    query(query: string, params?: any[]): any {
+        // @ts-ignore
+        return this.db.prepare(query).get(params);
     }
 
-    async queryAll(query: string, params?: any[]): Promise<any[]> {
-        return this.db.all(query, params);
+    queryAll(query: string, params?: any[]): any[] {
+        // @ts-ignore
+        return this.db.prepare(query).all(params);
     }
 
-    async insert(query: string, params?: any[]): Promise<void> {
-        await this.db.run(query, params);
+    insert(query: string, params?: any[]): void {
+        // @ts-ignore
+        this.db.prepare(query).run(params);
     }
 
-    async update(query: string, params?: any[]): Promise<void> {
-        await this.db.run(query, params);
+    update(query: string, params?: any[]): void {
+        // @ts-ignore
+        this.db.prepare(query).run(params);
     }
 
-    async delete(query: string, params?: any[]): Promise<void> {
-        await this.db.run(query, params);
+    delete(query: string, params?: any[]): void {
+        // @ts-ignore
+        this.db.prepare(query).run(params);
     }
 
-    async close(): Promise<void> {
-        await this.db.close();
+    close(): void {
+        this.db.close();
     }
 }

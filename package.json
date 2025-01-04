@@ -9,8 +9,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "better-sqlite3": "^11.7.0",
     "nanoid": "^5.0.9",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "sqlite": "^5.1.1"
   }
 }
