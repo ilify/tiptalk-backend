@@ -5,6 +5,7 @@ import { auth } from "./Apps/Auth";
 import { users } from "./Apps/User";
 import { houses } from "./Apps/House";
 import { Pay } from "./Apps/Pay";
+import { data } from "./Apps/Data";
 
 const app = new Hono();
 
@@ -21,6 +22,7 @@ app.route("/auth", auth);
 app.route("/user", users);
 app.route("/house", houses);
 app.route("/pay", Pay);
+app.route("/data", data);
 app.get("/", (c) => c.json({ status: "alive" }));
 
 Bun.serve({
