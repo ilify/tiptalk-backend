@@ -78,8 +78,7 @@ Pay.get("/link/:code", async (c) => {
                 "lastName": " - " + code,
                 "phoneNumber": user.Phone || "00000000",
                 "email": user.Email,
-                "webhook":
-                    "https://twcw5rtg-3001.uks1.devtunnels.ms/pay/checkpay", // Change this to your own webhook
+                "webhook": "https://tiptalk.up.railway.app/pay/checkpay", // Change this to your own webhook
                 "silentWebhook": true,
             }),
         },
