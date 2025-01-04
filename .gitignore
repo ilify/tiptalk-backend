@@ -1,8 +1,7 @@
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 
 # Logs
-
-.db
+Database/Dev.db
 
 logs
 _.log

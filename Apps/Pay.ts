@@ -3,6 +3,18 @@ import { getCookie } from "hono/cookie";
 import { Database } from "../Database";
 
 export const Pay = new Hono();
+const isProd = process.env.NODE_ENV === "production";
+
+async function GetMyIPGlobal() {
+    if (isProd) {
+        return "https://tiptalk.up.railway.app";
+    }
+    const ip = await fetch("https://api.ipify.org?format=json").then((res) =>
+        res.json()
+    )
+        .then((data) => data.ip);
+    return `http://${ip}:3000`;
+}
 
 const AllowedCodes = {
     "00c1": {
@@ -49,8 +61,8 @@ Pay.get("/link/:code", async (c) => {
         [SessionID],
     );
     const code = c.req.param("code") as keyof typeof AllowedCodes;
+    const ip = await GetMyIPGlobal();
 
-    console.log(AllowedCodes[code]);
     const response = await fetch(
         "https://api.preprod.konnect.network/api/v2/payments/init-payment",
         {
@@ -78,7 +90,7 @@ Pay.get("/link/:code", async (c) => {
                 "lastName": " - " + code,
                 "phoneNumber": user.Phone || "00000000",
                 "email": user.Email,
-                "webhook": "https://tiptalk.up.railway.app/pay/checkpay", // Change this to your own webhook
+                "webhook": ip + "/pay/checkpay", // Change this to your own webhook
                 "silentWebhook": true,
             }),
         },

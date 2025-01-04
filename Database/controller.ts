@@ -14,12 +14,17 @@ export class DatabaseWrapper {
     static init(): DatabaseWrapper {
         if (!this.instance) {
             const instance = new DatabaseWrapper();
-            const filename = path.join(__dirname, "Data.db"); // Use path.join for cross-platform compatibility
+            const isProd = process.env.NODE_ENV === "production";
+            const filename = path.join(
+                __dirname,
+                isProd ? "Prod.db" : "Dev.db",
+            ); // Use path.join for cross-platform compatibility
             console.log("Database path: ", filename);
             instance.db = new Database(filename);
             instance.initTables();
             this.instance = instance;
         }
+        this.instance.db.run("PRAGMA journal_mode = WAL;");
         return this.instance;
     }
 
