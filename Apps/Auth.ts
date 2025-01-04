@@ -82,6 +82,13 @@ auth.post("/register", async (c) => {
 });
 
 auth.get("/logout", async (c) => {
+    const sessionId = getCookie(c, "SessionID");
+    if (!sessionId) {
+        return c.json({ error: "Not logged in" }, 401);
+    }
+    const query = `UPDATE users SET SessionID = NULL WHERE SessionID = ?`;
+    await Database.query(query, [sessionId]);
+
     deleteCookie(c, "SessionID", {
         path: "/",
         secure: true,
