@@ -25,9 +25,9 @@ app.route("/pay", Pay);
 app.route("/data", data);
 app.get("/", (c) => c.json({ status: "alive" }));
 
+const isProd = process.env.NODE_ENV === "production";
+
 Bun.serve({
-  port: 3001,
+  port: 3000 + (isProd ? 0 : 1),
   fetch: app.fetch,
 });
-
-console.log("Server started at http://localhost:3001");
