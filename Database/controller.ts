@@ -19,7 +19,7 @@ export class DatabaseWrapper {
                 __dirname,
                 isProd ? "Prod.db" : "Dev.db",
             ); // Use path.join for cross-platform compatibility
-            console.log("Database path: ", filename);
+            // console.log("Database path: ", filename);
             instance.db = new Database(filename);
             instance.initTables();
             this.instance = instance;
