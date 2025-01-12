@@ -61,8 +61,10 @@ houses.get("/feed", async (c) => {
     const res = await Database.queryAll(SearchQuery);
     const houses = [];
     for (const row of res) {
+        row.Data = JSON.parse(row.Data);
+        row.Data.images = row.Data.images.slice(0, 1);
         const house = {
-            ...JSON.parse(row.Data),
+            ...row.Data,
             ID: row.ID,
             Score: row.Score,
             Promoted: row.Promoted,

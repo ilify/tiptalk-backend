@@ -72,6 +72,7 @@ auth.post("/register", async (c) => {
                 sameSite: "none",
             },
         );
+
         const updateQuery = `UPDATE users SET SessionID = ? WHERE email = ?`;
         await Database.query(updateQuery, [sessionId, email]);
 
